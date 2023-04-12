@@ -67,6 +67,7 @@ int main() {
 
 	testShader.use();
 	glEnable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	
 	// attractor stuff here
@@ -90,7 +91,7 @@ int main() {
 		processInput(window); // process user input
 
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // background color 
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
 		testShader.use(); // use the test obj shader 
 		
