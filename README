@@ -1,0 +1,30 @@
+ ________  _________  _________               ________          _________  ________          ________  ________             
+|\   __  \|\___   ___\\___   ___\            |\   __  \        |\___   ___\\   __  \        |\   ___ \|\   __  \            
+\ \  \|\  \|___ \  \_\|___ \  \_|____________\ \  \|\  \       \|___ \  \_\ \  \|\  \       \ \  \_|\ \ \  \|\  \           
+ \ \   __  \   \ \  \     \ \  \|\____________\ \   _  _\           \ \  \ \ \  \\\  \       \ \  \ \\ \ \  \\\  \          
+  \ \  \ \  \   \ \  \     \ \  \|____________|\ \  \\  \|           \ \  \ \ \  \\\  \       \ \  \_\\ \ \  \\\  \ ___ ___ 
+   \ \__\ \__\   \ \__\     \ \__\              \ \__\\ _\            \ \__\ \ \_______\       \ \_______\ \_______\\__\\__\
+    \|__|\|__|    \|__|      \|__|               \|__|\|__|            \|__|  \|_______|        \|_______|\|_______\|__\|__|
+
+To do list for Att-R (Attractor Renderer) a GLFW3 OpenGL attractor rendering program.
+
+List of what to do and what I've completed thus far..
+
+1. Run through the initial maths - DONE
+
+2. Create the GLFW environment and initial program (to graph the maths I completed) - DONE
+
+3. optimization and efficiency!! - STARTED
+	3-1. translate all cpp scripts into c scripts, adopt cglm or glm
+	3-2. fix the way tail colour values are sent to the shader
+	3-3. aproximate sqrt, maybe even division (its chaotic anyways, at least see how it works out)
+
+4. add optional camera rotation to accentuate the 3D aspect.
+
+5. add bloom / blurring to hide the pixelation
+
+6. create various makefiles for (32 and 64 bit?) Debian based linux systems, arch based linux systems, as well as windows. compile the program with these systems and add the precompiled binaries to download.
+	
+
+
+
