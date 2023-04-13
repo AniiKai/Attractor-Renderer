@@ -1,12 +1,9 @@
 #ifndef LLIST_H
 #define LLIST_H
 typedef struct tailNode { // queue node struct
-	float x, y, z; // current position of parent lNode at creation
-	float px, py, pz; // previous position of parent lNode at creation
-	float r;
-	float g;
-	float b;
-	float a;
+	// holds all node information arranged in a way that the shader can interpret
+	// 0: curr x, 1: curr y, 2: curr z, 3: prev x, 4: prev y, 5: prev z, 6: r, 7: g, 8: b, 9: a, 10 11 12 13 are copied values of previous r g b a 
+	float vert[14];
 	struct tailNode* next; 
 	struct tailNode* prev; 
 } tailNode;

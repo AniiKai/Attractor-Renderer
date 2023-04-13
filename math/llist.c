@@ -7,45 +7,48 @@
 
 
 tailNode* cons(float x, float y, float z, float px, float py, float pz, int div) { // create new tailNode
-	tailNode* node = (tailNode*)malloc(sizeof(tailNode));
-	node->x = x/div; node->y = y/div; node->z = z/div;
-	node->px = px/div; node->py = py/div; node->pz = pz/div;
-	float dx = x-px;
+	tailNode* node = (tailNode*)malloc(sizeof(tailNode)); // check header for array map
+	node->vert[0] = x/div; node->vert[1] = y/div; node->vert[2] = z/div;
+	node->vert[3] = px/div; node->vert[4] = py/div; node->vert[5] = pz/div;
+	float dx = x-px; // temporary values to calculate speed
 	float dy = y-py;
 	float dz = z-pz;
 	float vel = sqrt(dx*dx + dy*dy + dz*dz);
 	if (vel < 1.0f) { // map colors to speed
-		node->r = 0.0f;
-		node->g = vel;
-		node->b = 1.0f;
+		node->vert[6] = 0.0f;
+		node->vert[7] = vel;
+		node->vert[8] = 1.0f;
 	}
 	else if (vel < 2.0f) {
-		node->r = 0.0f;
-		node->g = 1.0f;
-		node->b = 2.0f - vel;
+		node->vert[6] = 0.0f;
+		node->vert[7] = 1.0f;
+		node->vert[8] = 2.0f - vel;
 	}
 	else if (vel < 3.0f) {
-		node->r = vel - 2.0f;
-		node->g = 1.0f;
-		node->b = 0.0f;
+		node->vert[6] = vel - 2.0f;
+		node->vert[7] = 1.0f;
+		node->vert[8] = 0.0f;
 	}
 	else if (vel < 4.0f) {
-		node->r = 1.0f;
-		node->g = 4.0f - vel;
-		node->b = 0.0f;	
+		node->vert[6] = 1.0f;
+		node->vert[7] = 4.0f - vel;
+		node->vert[8] = 0.0f;	
 	}
 	else if (vel < 5.0f) {
-		node->r = 1.0f;
-		node->g = 0.0f;
-		node->b = vel - 4.0f;
+		node->vert[6] = 1.0f;
+		node->vert[7] = 0.0f;
+		node->vert[8] = vel - 4.0f;
 	}
 	else {
-		node->r = 1.0f;
-		node->g = 0.0f;
-		node->b = 1.0f;
+		node->vert[6] = 1.0f;
+		node->vert[7] = 0.0f;
+		node->vert[8] = 1.0f;
 	}
-
-	node->a = 1.0f;
+	node->vert[9] = 1.0f;
+	node->vert[10] = node->vert[6]; // set value of copies (bad)
+	node->vert[11] = node->vert[7];
+	node->vert[12] = node->vert[8];
+	node->vert[13] = node->vert[9];
 	node->next = NULL;
 	node->prev = NULL;
 	return node;
@@ -110,16 +113,11 @@ tailNode* rmAll(lNode* cont) {
 void tailSim(lNode* cont) {
 	tailNode* curr = cont->end;
 	while(curr != NULL) {
-		curr->a -= 0.01f;
-		
-		float vertices[14];
-		vertices[0] = curr->px; vertices[1] = curr->py; vertices[2] = curr->pz;
-		vertices[3] = curr->x; vertices[4] = curr->y; vertices[5] = curr->z;
-		vertices[6] = curr->r; vertices[7] = curr->g; vertices[8] = curr->b; vertices[9] = curr->a;
-		vertices[10] = curr->r; vertices[11] = curr->g; vertices[12] = curr->b; vertices[13] = curr->a;
+		curr->vert[9] -= 0.01f;
+		curr->vert[13] = curr->vert[9];
 
 
-		glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(curr->vert), curr->vert, GL_STATIC_DRAW);
 		
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
@@ -129,7 +127,7 @@ void tailSim(lNode* cont) {
 	
 		glDrawArrays(GL_LINES, 0, 2);
 
-		if (curr->a <= 0.0f) {
+		if (curr->vert[9] <= 0.0f) {
 			rmQueue(cont);
 		}
 		// here is where you would render the tail as a line in glfw
