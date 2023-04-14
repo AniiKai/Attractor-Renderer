@@ -28,7 +28,7 @@ List of what to do and what I've completed thus far..
 3. optimization and efficiency!! - STARTED
 	3-1. translate all cpp scripts into c scripts, adopt cglm over glm - DONE
 	3-2. fix the way tail colour values are sent to the shader
-	3-3. aproximate sqrt, maybe even division (its chaotic anyways, at least see how it works out)
+	3-3. add multithreading, in the node loop.
 
 4. add more attractor equations other than lorenz (as many as I can!)
 

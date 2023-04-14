@@ -113,7 +113,7 @@ tailNode* rmAll(lNode* cont) {
 void tailSim(lNode* cont) {
 	tailNode* curr = cont->end;
 	while(curr != NULL) {
-		curr->vert[9] -= 0.01f;
+		curr->vert[9] -= 0.02f;
 		curr->vert[13] = curr->vert[9];
 
 
