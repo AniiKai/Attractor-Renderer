@@ -8,6 +8,17 @@
 
 To do list for Att-R (Attractor Renderer) a GLFW3 OpenGL attractor rendering program.
 
+Dependencies (install these before attempting to compile):
+	GLAD - openGL library 
+		installation links: https://glad.dav1d.de/
+
+	glfw3 - graphics engine 
+		installation links: https://www.glfw.org/ (or your package manager!!!)
+
+	cglm - graphics maths, currently unused but will be used later for camera translations aswell as bloom
+		installation links: https://github.com/recp/cglm (or once again, your package manager!!!) 
+	
+
 List of what to do and what I've completed thus far..
 
 1. Run through the initial maths - DONE
@@ -15,7 +26,7 @@ List of what to do and what I've completed thus far..
 2. Create the GLFW environment and initial program (to graph the maths I completed) - DONE
 
 3. optimization and efficiency!! - STARTED
-	3-1. translate all cpp scripts into c scripts, adopt cglm or glm
+	3-1. translate all cpp scripts into c scripts, adopt cglm over glm - DONE
 	3-2. fix the way tail colour values are sent to the shader
 	3-3. aproximate sqrt, maybe even division (its chaotic anyways, at least see how it works out)
 
