@@ -1,17 +1,16 @@
-// making this into a c file soon!
+// previous C++ program, now unused!
+// once again keeping just in case..
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include <cglm/cglm.h>
 
-#include "shader/shader.h"
+#include "shader/tshader.h"
 #include "math/attractors.h"
 #include "math/llist.h"
 
-#include <iostream>
 #include <stdlib.h>
+#include <stdio.h>
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow *window);
@@ -31,10 +30,10 @@ int main() {
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 	// create the window
-	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Attractors", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Att-R", NULL, NULL);
 	
 	if (window == NULL) {
-	    	std::cout << "Failed to create GLFW window" << std::endl;
+	    	printf("Failed to create GLFW window");
  	    	glfwTerminate();
 	    	return -1;
 	}
@@ -45,12 +44,12 @@ int main() {
 	
 	// initialize GLAD
 	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-		std::cout << "Failed to initialize GLAD" << std::endl;
+		printf("Failed to initialize GLAD");
 		return -1;
        	}
 	
-	Shader testShader("shader/defaultShader.vert", "shader/defaultShader.frag");
-	
+	//Shader testShader("shader/defaultShader.vert", "shader/defaultShader.frag");
+	unsigned int shader = createShader("shader/defaultShader.vert", "shader/defaultShader.frag");
 	
 	// create buffer objects
 	//unsigned int EBO;
@@ -65,7 +64,8 @@ int main() {
 	
 	glBindBuffer(GL_ARRAY_BUFFER, VBO); // bind current buffer 
 
-	testShader.use();
+	//testShader.use();
+	useShader(shader);
 	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -84,16 +84,22 @@ int main() {
 		z += 0.0001f;
 	}
 
-
+	double previousTime = glfwGetTime();
+	int frames = 0;
 	// openGL window loop
 	while (!glfwWindowShouldClose(window)) {
+		double currentTime = glfwGetTime();
+		frames++;
+		if (currentTime - previousTime >= 1.0) { // get simulation fps
+			printf("fps: %d\n", frames);
+			frames = 0;
+			previousTime = currentTime;
+		}
 
 		processInput(window); // process user input
 
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // background color 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
-		testShader.use(); // use the test obj shader 
 		
 		stepLorenz(nodeArr, n, 50); // step the simulation
 
