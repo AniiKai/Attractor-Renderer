@@ -100,7 +100,7 @@ int main() {
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // background color 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		
-		stepLorenz(nodeArr, n, 50); // step the simulation
+		stepLorenz(nodeArr, n, 50, shader); // step the simulation
 
 		// swap render buffer 
 		glfwSwapBuffers(window);

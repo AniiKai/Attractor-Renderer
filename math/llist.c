@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <math.h>
 #include "llist.h"
+#include "../shader/shader.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -15,40 +16,36 @@ tailNode* cons(float x, float y, float z, float px, float py, float pz, int div)
 	float dz = z-pz;
 	float vel = sqrt(dx*dx + dy*dy + dz*dz);
 	if (vel < 1.0f) { // map colors to speed
-		node->vert[6] = 0.0f;
-		node->vert[7] = vel;
-		node->vert[8] = 1.0f;
+		node->cols[0] = 0.0f;
+		node->cols[1] = vel;
+		node->cols[2] = 1.0f;
 	}
 	else if (vel < 2.0f) {
-		node->vert[6] = 0.0f;
-		node->vert[7] = 1.0f;
-		node->vert[8] = 2.0f - vel;
+		node->cols[0] = 0.0f;
+		node->cols[1] = 1.0f;
+		node->cols[2] = 2.0f - vel;
 	}
 	else if (vel < 3.0f) {
-		node->vert[6] = vel - 2.0f;
-		node->vert[7] = 1.0f;
-		node->vert[8] = 0.0f;
+		node->cols[0] = vel - 2.0f;
+		node->cols[1] = 1.0f;
+		node->cols[2] = 0.0f;
 	}
 	else if (vel < 4.0f) {
-		node->vert[6] = 1.0f;
-		node->vert[7] = 4.0f - vel;
-		node->vert[8] = 0.0f;	
+		node->cols[0] = 1.0f;
+		node->cols[1] = 4.0f - vel;
+		node->cols[2] = 0.0f;	
 	}
 	else if (vel < 5.0f) {
-		node->vert[6] = 1.0f;
-		node->vert[7] = 0.0f;
-		node->vert[8] = vel - 4.0f;
+		node->cols[0] = 1.0f;
+		node->cols[1] = 0.0f;
+		node->cols[2] = vel - 4.0f;
 	}
 	else {
-		node->vert[6] = 1.0f;
-		node->vert[7] = 0.0f;
-		node->vert[8] = 1.0f;
+		node->cols[0] = 1.0f;
+		node->cols[1] = 0.0f;
+		node->cols[2] = 1.0f;
 	}
-	node->vert[9] = 1.0f;
-	node->vert[10] = node->vert[6]; // set value of copies (bad)
-	node->vert[11] = node->vert[7];
-	node->vert[12] = node->vert[8];
-	node->vert[13] = node->vert[9];
+	node->cols[3] = 1.0f;
 	node->next = NULL;
 	node->prev = NULL;
 	return node;
@@ -110,11 +107,10 @@ tailNode* rmAll(lNode* cont) {
 	return rmAll(cont);
 }
 
-void tailSim(lNode* cont) {
+void tailSim(lNode* cont, unsigned int ID) {
 	tailNode* curr = cont->end;
 	while(curr != NULL) {
-		curr->vert[9] -= 0.02f;
-		curr->vert[13] = curr->vert[9];
+		curr->cols[3] -= 0.02f;
 
 
 		glBufferData(GL_ARRAY_BUFFER, sizeof(curr->vert), curr->vert, GL_STATIC_DRAW);
@@ -122,12 +118,13 @@ void tailSim(lNode* cont) {
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
 
-		glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(6 * sizeof(float)));
-		glEnableVertexAttribArray(1);
-	
+		//glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(6 * sizeof(float)));
+		//glEnableVertexAttribArray(1);
+		setCols(ID, "inColor", curr->cols);
+			
 		glDrawArrays(GL_LINES, 0, 2);
 
-		if (curr->vert[9] <= 0.0f) {
+		if (curr->cols[3] <= 0.0f) {
 			rmQueue(cont);
 		}
 		// here is where you would render the tail as a line in glfw

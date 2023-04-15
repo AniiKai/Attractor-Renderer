@@ -3,7 +3,8 @@
 typedef struct tailNode { // queue node struct
 	// holds all node information arranged in a way that the shader can interpret
 	// 0: curr x, 1: curr y, 2: curr z, 3: prev x, 4: prev y, 5: prev z, 6: r, 7: g, 8: b, 9: a, 10 11 12 13 are copied values of previous r g b a 
-	float vert[14];
+	float vert[6];
+	float cols[4];
 	struct tailNode* next; 
 	struct tailNode* prev; 
 } tailNode;
@@ -27,5 +28,5 @@ tailNode* rmQueue(lNode* cont); // queue removal function
 
 tailNode* rmAll(lNode* cont); // remove all existing nodes in queue
 			      //
-void tailSim(lNode* cont);
+void tailSim(lNode* cont, unsigned int ID);
 #endif

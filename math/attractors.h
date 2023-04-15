@@ -3,5 +3,5 @@
 #include "llist.h"
 lNode* lorenz(lNode* node); // classic lorenz attractor
 
-void stepLorenz(lNode** nodeArr, int n, int div); // calculate a step of the lorenz system
+void stepLorenz(lNode** nodeArr, int n, int div, unsigned int ID); // calculate a step of the lorenz system
 #endif
