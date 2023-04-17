@@ -49,7 +49,7 @@ int createShader(char* vertexPath, char* fragmentPath) {
 }
 
 void setCols(unsigned int ID, char* name, float rgba[4]) {
-			glUniform4f(glGetUniformLocation(ID, name), rgba[0], rgba[1], rgba[2], rgba[3]); 
+			glUniform4f(glGetUniformLocation(ID, name), rgba[0], rgba[1], rgba[2], rgba[3]); // I didn't want to read documentation to figure out how to pass in the whole array at once so :] 
 }
 
 void useShader(unsigned int ID) {

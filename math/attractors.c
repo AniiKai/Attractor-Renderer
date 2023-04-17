@@ -23,8 +23,12 @@ lNode* lorenz(lNode* node) { // the classic lorenz attractor equation
 
 void stepLorenz(lNode** nodeArr, int n, int div, unsigned int ID) {	
 	for (int i=0; i<n; i++) {
-		nodeArr[i] = lorenz(nodeArr[i]);
 		tailSim(nodeArr[i], ID);
 		addQueue(nodeArr[i], div);
+		nodeArr[i] = lorenz(nodeArr[i]);
 	}
 }
+
+
+
+

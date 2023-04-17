@@ -11,40 +11,10 @@ tailNode* cons(float x, float y, float z, float px, float py, float pz, int div)
 	tailNode* node = (tailNode*)malloc(sizeof(tailNode)); // check header for array map
 	node->vert[0] = x/div; node->vert[1] = y/div; node->vert[2] = z/div;
 	node->vert[3] = px/div; node->vert[4] = py/div; node->vert[5] = pz/div;
-	float dx = x-px; // temporary values to calculate speed
-	float dy = y-py;
-	float dz = z-pz;
-	float vel = sqrt(dx*dx + dy*dy + dz*dz);
-	if (vel < 1.0f) { // map colors to speed
-		node->cols[0] = 0.0f;
-		node->cols[1] = vel;
-		node->cols[2] = 1.0f;
-	}
-	else if (vel < 2.0f) {
-		node->cols[0] = 0.0f;
-		node->cols[1] = 1.0f;
-		node->cols[2] = 2.0f - vel;
-	}
-	else if (vel < 3.0f) {
-		node->cols[0] = vel - 2.0f;
-		node->cols[1] = 1.0f;
-		node->cols[2] = 0.0f;
-	}
-	else if (vel < 4.0f) {
-		node->cols[0] = 1.0f;
-		node->cols[1] = 4.0f - vel;
-		node->cols[2] = 0.0f;	
-	}
-	else if (vel < 5.0f) {
-		node->cols[0] = 1.0f;
-		node->cols[1] = 0.0f;
-		node->cols[2] = vel - 4.0f;
-	}
-	else {
-		node->cols[0] = 1.0f;
-		node->cols[1] = 0.0f;
-		node->cols[2] = 1.0f;
-	}
+
+	node->cols[0] = x-px; 
+	node->cols[1] = y-py;
+	node->cols[2] = z-pz;
 	node->cols[3] = 1.0f;
 	node->next = NULL;
 	node->prev = NULL;
@@ -118,9 +88,7 @@ void tailSim(lNode* cont, unsigned int ID) {
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 		glEnableVertexAttribArray(0);
 
-		//glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void*)(6 * sizeof(float)));
-		//glEnableVertexAttribArray(1);
-		setCols(ID, "inColor", curr->cols);
+		setCols(ID, "ins", curr->cols);
 			
 		glDrawArrays(GL_LINES, 0, 2);
 
