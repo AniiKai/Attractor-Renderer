@@ -25,7 +25,7 @@ List of what to do and what I've completed thus far..
 
 2. Create the GLFW environment and initial program (to graph the maths I completed) - DONE
 
-3. optimization and efficiency!! - STARTED
+3. optimization and efficiency!! - DONE (for now)
 	3-1. translate all cpp scripts into c scripts, adopt cglm over glm - DONE
 	3-2. fix the way tail colour values are sent to the shader - DONE
 	3-3. add multithreading, in the node loop. - nevermind, rendering on multiple threads does not work...

@@ -7,6 +7,7 @@
 #include "shader/shader.h"
 #include "math/attractors.h"
 #include "math/llist.h"
+#include "misc/setup.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -19,6 +20,13 @@ const unsigned int SCR_WIDTH = 1920;
 const unsigned int SCR_HEIGHT = 1080;
 
 int main() {
+
+	// initial setup before window creation
+	int n = setupWelcome();
+	int r = setupRandom();
+	int alg = setupAttr();
+	setupConf();
+
 	// initialize window variables
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -70,8 +78,6 @@ int main() {
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_MULTISAMPLE);
 	// attractor stuff here
-	
-	int n = 1000; // ammount of nodes to simulate
 	lNode** nodeArr = (lNode**)malloc(n * sizeof(lNode*)); // create list of nodes to simulate attractor with
 	float x = 0.0001f;
 	float y = 0.00015f;
