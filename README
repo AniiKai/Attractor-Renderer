@@ -30,7 +30,7 @@ List of what to do and what I've completed thus far..
 	3-2. fix the way tail colour values are sent to the shader - DONE
 	3-3. add multithreading, in the node loop. - nevermind, rendering on multiple threads does not work...
 
-4. add more attractor equations other than lorenz (as many as I can!)
+4. add more attractor equations other than lorenz (as many as I can!) - Added 10!
 
 5. add optional camera rotation to accentuate the 3D aspect.
 

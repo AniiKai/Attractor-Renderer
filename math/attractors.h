@@ -12,6 +12,25 @@ typedef struct structArgs {
 
 lNode* lorenz(lNode* node); // classic lorenz attractor
 
-void stepLorenz(lNode** nodeArr, int n, int div, unsigned int ID); // calculate a step of the lorenz system
+lNode* halvorsen(lNode* node);
+
+lNode* aizawa(lNode* node);
+
+lNode* fourWing(lNode* node);
+
+lNode* dadras(lNode* node);
+
+lNode* zhouChen(lNode* node);
+
+lNode* thomas(lNode* node);
+
+lNode* rayleighBernard(lNode* node);
+
+lNode* cells(lNode* node);
+
+lNode* bouali(lNode* node);
+
+void stepAttr(lNode** nodeArr, int n, int div, unsigned int ID, int choice); // calculate a step of the lorenz system
 								   //
+float sizeTest(lNode** nodeArr, int n, int choice, float max);
 #endif
