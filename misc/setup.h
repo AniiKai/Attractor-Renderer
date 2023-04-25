@@ -3,7 +3,7 @@
 
 int setupWelcome();
 
-int setupRandom();
+int setupFS();
 
 int setupAttr();
 

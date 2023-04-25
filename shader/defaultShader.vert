@@ -3,6 +3,9 @@ layout (location = 0) in vec3 aPos;
 
 out vec4 ourColor;
 uniform vec4 ins;
+uniform mat4 view;
+uniform mat4 proj;
+uniform mat4 model;
 
 void main() {
 	float r = 0.0f;
@@ -39,6 +42,6 @@ void main() {
 		g = 0.0f;
 		b = 1.0f;
 	}
-    gl_Position = vec4(aPos, 1.0);
+    gl_Position = proj * view * model * vec4(aPos, 1.0);
     ourColor = vec4(r, g, b, ins.a);
 }

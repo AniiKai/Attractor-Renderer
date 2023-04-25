@@ -15,11 +15,10 @@ int setupWelcome() {
 	return n;
 }
 
-int setupRandom() {
+int setupFS() {
 	printf("\n\t\t. . .\n\n");
 	printf("\t[ O ]> Confirmed!\n\n");
-	printf("\t[ O ]> Would you like to randomize node starting positions?\n");
-	printf("\t[ O ]> No would mean nodes would all start in a predetermined gradient.\n");
+	printf("\t[ O ]> Would you like to run in fullscreen?\n");
 	printf("\t[ O ]> 0: YES, 1: NO\n\n");
 	printf("\t[ I ]> Enter choice: ");
 	int n = 0;
@@ -39,6 +38,7 @@ int setupAttr() {
 	if (n==10) {
 		printf("\n\n\t[ O ]> Release Attractors, extra attractors added each new release!\n\n");
 		printf("\t[ O ]> 1: Ver. 0.0.1 - Bouali.\n");
+		printf("\t[ O ]> 1: Ver. 0.0.2 - Chen Lee.\n");
 
 		printf("\n\t[ I ]> Enter Choice: ");
 		scanf("%d", &n);

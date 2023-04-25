@@ -9,6 +9,7 @@
 #include "math/llist.h"
 #include "misc/setup.h"
 
+#include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -23,7 +24,7 @@ int main() {
 
 	// initial setup before window creation
 	int n = setupWelcome();
-	int r = setupRandom();
+	int fc = setupFS();
 	int alg = setupAttr();
 	setupConf();
 
@@ -37,7 +38,12 @@ int main() {
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 	// create the window
-	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Att-R", NULL, NULL);
+	GLFWwindow* window; 
+	if (fc == 0) {
+		window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Att-R", glfwGetPrimaryMonitor(), NULL);
+	} else {
+		window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Att-R", NULL, NULL);
+	}
 	
 	if (window == NULL) {
 	    	printf("Failed to create GLFW window");
@@ -73,6 +79,7 @@ int main() {
 
 	//testShader.use();
 	useShader(shader);
+	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 	glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -82,6 +89,11 @@ int main() {
 	float x = 0.0001f;
 	float y = 0.00015f;
 	float z = 0.0002f;
+
+	if (alg == 11) {
+		x += 1.0f;
+		z += 5.0f;
+	}
 	for (int i=0; i<n; i++) {
 		nodeArr[i] = newNode(x, y, z);
 		x += 0.0002f;
@@ -120,13 +132,35 @@ int main() {
 		case 10:
 			div = 35;
 			break;
-
+		case 11:
+			div = 14;
+			break;
 		default:
 			div = 55;
 			break;
 	}
 
+	mat4 model = {
+		{1, 0, 0, 0},
+		{0, 1, 0, 0},
+		{0, 0, 1, 0},
+		{0, 0, 0, 1}};
+			
+	
 
+	mat4 proj;
+	glm_perspective_default(1920.0f/1080.0f, proj);
+	vec3 up = {0.0f, 1.0f, 0.0f};
+	mat4 view;
+
+	srand(time(NULL));
+	float camX = (float)(rand()%1000)/250.0f - 2.0f;
+	float camY = (float)(rand()%1000)/250.0f - 2.0f;
+	float camZ = (float)(rand()%1000)/250.0f - 2.0f;
+	float pCamX = 1.0f;
+	float pCamY = 1.0f;
+	float pCamZ = 1.0f;
+	int moveCounter = rand()%1000;
 
 	double previousTime = glfwGetTime();
 	int frames = 0;
@@ -143,6 +177,26 @@ int main() {
 		}
 
 		processInput(window); // process user input
+		
+		pCamX += (camX - pCamX) * 0.005;
+		pCamY += (camY - pCamY) * 0.005f;
+		pCamZ += (camZ - pCamZ) * 0.005f;
+		moveCounter -= 1;
+		if (moveCounter <= 0) {
+			moveCounter = rand()%1000;
+			camX = (float)(rand()%1000)/250.0f - 2.0f;
+			camY = (float)(rand()%1000)/250.0f - 2.0f;
+			camZ = (float)(rand()%1000)/250.0f - 2.0f;
+		}
+
+		vec3 eye = {pCamX, pCamY, pCamZ};
+
+		vec3 center = {0.0f, 0.0f, 0.0f};
+		glm_lookat(eye, center, up, view);
+		setView(shader, "model", model);
+		setView(shader, "view", view);
+		setView(shader, "proj", proj);	
+		
 
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // background color 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

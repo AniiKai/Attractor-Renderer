@@ -1,6 +1,5 @@
 #include "shader.h"
 #include <glad/glad.h>
-#include <cglm/cglm.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,19 +26,19 @@ int createShader(char* vertexPath, char* fragmentPath) {
 	vertex = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vertex, 1, (const char**)&vShader, NULL);
 	glCompileShader(vertex);
-	//checkCompileErrors(vertex, "VERTEX");
+	checkCompileErrors(vertex, "VERTEX");
 
 	fragment = glCreateShader(GL_FRAGMENT_SHADER);
 	glShaderSource(fragment, 1, (const char**)&fShader, NULL);
 	glCompileShader(fragment);
-	//checkCompileErrors(fragment, "FRAGMENT");
+	checkCompileErrors(fragment, "FRAGMENT");
 
 	unsigned int ID = glCreateProgram();
 	glAttachShader(ID, vertex);
 	glAttachShader(ID, fragment);
 
 	glLinkProgram(ID);
-	//checkCompileErrors(ID, "PROGRAM");
+	checkCompileErrors(ID, "PROGRAM");
 
 	glDeleteShader(vertex);
 	glDeleteShader(fragment);
@@ -48,8 +47,30 @@ int createShader(char* vertexPath, char* fragmentPath) {
 	return ID;
 }
 
+void checkCompileErrors(GLuint shader, char* type) {
+	GLint success;
+	GLchar infoLog[1024];
+	if (strcmp(type, "PROGRAM")) {
+		glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
+		if (!success) {
+			glGetShaderInfoLog(shader, 1024, NULL, infoLog);
+			printf("%s\n%s\n", type, infoLog);
+		}
+	} else {
+		glGetProgramiv(shader, GL_LINK_STATUS, &success);
+		if (!success) {
+			glGetProgramInfoLog(shader, 1024, NULL, infoLog);
+			printf("%s\n%s\n", type, infoLog);
+		}
+	}
+}
+
 void setCols(unsigned int ID, char* name, float rgba[4]) {
 			glUniform4f(glGetUniformLocation(ID, name), rgba[0], rgba[1], rgba[2], rgba[3]); // I didn't want to read documentation to figure out how to pass in the whole array at once so :] 
+}
+
+void setView(unsigned int ID, char* name, mat4 view) {
+			glUniformMatrix4fv(glGetUniformLocation(ID, name), 1, GL_FALSE, &view[0][0]);
 }
 
 void useShader(unsigned int ID) {

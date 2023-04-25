@@ -32,9 +32,9 @@ List of what to do and what I've completed thus far..
 
 4. add more attractor equations other than lorenz (as many as I can!) - Added 10!
 
-5. add optional camera rotation to accentuate the 3D aspect.
+5. add optional camera rotation to accentuate the 3D aspect. - DONE
 
-6. add bloom / blurring to hide the pixelation - did multisampling, will add bloom as well probably
+6. add bloom / blurring to hide the pixelation - did multisampling, will add bloom as well probably - Working on it..
 
 7. create various makefiles for (32 and 64 bit?) Debian based linux systems, arch based linux systems, as well as windows. compile the program with these systems and add the precompiled binaries to download.
 	

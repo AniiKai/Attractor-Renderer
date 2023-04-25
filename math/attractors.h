@@ -1,6 +1,7 @@
 #ifndef ATTRACTORS_H
 #define ATTRACTORS_H
 #include "llist.h"
+#include <cglm/cglm.h>
 typedef struct structArgs {
 	lNode** nodeArr;
 	int begin;
@@ -29,6 +30,8 @@ lNode* rayleighBernard(lNode* node);
 lNode* cells(lNode* node);
 
 lNode* bouali(lNode* node);
+
+lNode* chenLee(lNode* node);
 
 void stepAttr(lNode** nodeArr, int n, int div, unsigned int ID, int choice); // calculate a step of the lorenz system
 								   //

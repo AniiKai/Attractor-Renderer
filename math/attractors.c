@@ -184,6 +184,24 @@ lNode* bouali(lNode* node) {
 
 }
 
+lNode* chenLee(lNode* node) {
+	float a = 5.0f;
+	float b = -10.0f;
+	float c = -0.38f;
+	float t = 0.004;
+	float x = node->x;
+	float y = node->y;
+	float z = node->z;
+	node->x = x + t * (a*x - y*z);
+	node->y = y + t * (b*y + x*z);
+	node->z = z + t * (c*z + x*y/3.0f);
+	node->px = x;
+	node->py = y;
+	node->pz = z;
+	return node;
+
+}
+
 void stepAttr(lNode** nodeArr, int n, int div, unsigned int ID, int choice) {	
 	for (int i=0; i<n; i++) {
 		tailSim(nodeArr[i], ID);
@@ -218,6 +236,9 @@ void stepAttr(lNode** nodeArr, int n, int div, unsigned int ID, int choice) {
 				break;
 			case 10:
 				nodeArr[i] = bouali(nodeArr[i]);
+				break;
+			case 11:
+				nodeArr[i] = chenLee(nodeArr[i]);
 				break;
 			default:
 				nodeArr[i] = lorenz(nodeArr[i]);
@@ -258,6 +279,9 @@ float sizeTest(lNode** nodeArr, int n, int choice, float max) {
 				break;
 			case 10:
 				nodeArr[i] = bouali(nodeArr[i]);
+				break;
+			case 11:
+				nodeArr[i] = chenLee(nodeArr[i]);
 				break;
 			default:
 				nodeArr[i] = lorenz(nodeArr[i]);
