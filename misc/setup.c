@@ -47,6 +47,20 @@ int setupAttr() {
 	return n;
 }
 
+int setupRT() {
+	printf("\n\t\t. . .\n\n");
+	printf("\t[ O ]> Confirmed!\n\n");
+	printf("\t[ O ]> DEBUG - Would you like to run in static mode?\n");
+	printf("\t[ O ]> WARNING - Static mode only renders one node, however said node is simulated MANY times.\n");
+	printf("\t[ O ]> It is recommended to only run in static mode with ammount of nodes to simulate set to one, otherwise your computers memory will be eaten up!\n\n");
+	printf("\t[ O ]> Run in static mode?\n");
+	printf("\t[ O ]> 0: YES, 1: NO\n\n");
+	printf("\t[ I ]> Enter choice: ");
+	int n = 0;
+	scanf("%d", &n);
+	return n;
+}
+
 void setupConf() {
 	printf("\n\t\t. . .\n\n");
 	printf("\t[ O ]> Confirmed!\n\n");

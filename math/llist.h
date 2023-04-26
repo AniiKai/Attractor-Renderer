@@ -29,4 +29,6 @@ tailNode* rmQueue(lNode* cont); // queue removal function
 tailNode* rmAll(lNode* cont); // remove all existing nodes in queue
 			      //
 void tailSim(lNode* cont, unsigned int ID);
+
+void visualizeTest(lNode* cont, unsigned int ID);
 #endif

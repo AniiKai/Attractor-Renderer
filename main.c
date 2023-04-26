@@ -26,6 +26,7 @@ int main() {
 	int n = setupWelcome();
 	int fc = setupFS();
 	int alg = setupAttr();
+	int runTest = setupRT();
 	setupConf();
 
 	// initialize window variables
@@ -139,6 +140,12 @@ int main() {
 			div = 55;
 			break;
 	}
+	float max = 0;
+	if (runTest == 0) {
+		for (int i=0; i<100000; i++) {
+			max = sizeTest(nodeArr, n, div, alg, max);
+		}
+	}
 
 	mat4 model = {
 		{1, 0, 0, 0},
@@ -164,7 +171,6 @@ int main() {
 
 	double previousTime = glfwGetTime();
 	int frames = 0;
-	float max = 0; // comment this
 	// openGL window loop
 	while (!glfwWindowShouldClose(window)) {
 		double currentTime = glfwGetTime();
@@ -181,6 +187,7 @@ int main() {
 		pCamX += (camX - pCamX) * 0.005;
 		pCamY += (camY - pCamY) * 0.005f;
 		pCamZ += (camZ - pCamZ) * 0.005f;
+
 		moveCounter -= 1;
 		if (moveCounter <= 0) {
 			moveCounter = rand()%1000;
@@ -190,9 +197,9 @@ int main() {
 		}
 
 		vec3 eye = {pCamX, pCamY, pCamZ};
-
 		vec3 center = {0.0f, 0.0f, 0.0f};
 		glm_lookat(eye, center, up, view);
+
 		setView(shader, "model", model);
 		setView(shader, "view", view);
 		setView(shader, "proj", proj);	
@@ -200,9 +207,11 @@ int main() {
 
 		glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // background color 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		//max = sizeTest(nodeArr, n, alg, max); // comment this
-		stepAttr(nodeArr, n, div, shader, alg); // step the simulation
-
+		if (runTest == 0) {
+			visualizeTest(nodeArr[0], shader);
+		} else {
+			runSim(nodeArr, n, div, shader, alg); // step the simulation
+		}
 		// swap render buffer 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

@@ -33,7 +33,9 @@ lNode* bouali(lNode* node);
 
 lNode* chenLee(lNode* node);
 
-void stepAttr(lNode** nodeArr, int n, int div, unsigned int ID, int choice); // calculate a step of the lorenz system
+void runSim(lNode** nodeArr, int n, int div, unsigned int ID, int choice); // calculate a step + render it
+
+void stepAttr(lNode* nodeArr, int div, int choice); // calculate a step of a chaotic system
 								   //
-float sizeTest(lNode** nodeArr, int n, int choice, float max);
+float sizeTest(lNode** nodeArr, int n, int div, int choice, float max);
 #endif

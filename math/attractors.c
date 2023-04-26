@@ -201,92 +201,58 @@ lNode* chenLee(lNode* node) {
 	return node;
 
 }
-
-void stepAttr(lNode** nodeArr, int n, int div, unsigned int ID, int choice) {	
+void runSim(lNode** nodeArr, int n, int div, unsigned int ID, int choice) {
 	for (int i=0; i<n; i++) {
 		tailSim(nodeArr[i], ID);
-		addQueue(nodeArr[i], div);
-		switch (choice) {
-			case 1:
-				nodeArr[i] = lorenz(nodeArr[i]);
-				break;
-			case 2:
-				nodeArr[i] = halvorsen(nodeArr[i]);
-				break;
-			case 3:
-				nodeArr[i] = aizawa(nodeArr[i]);
-				break;
-			case 4:
-				nodeArr[i] = fourWing(nodeArr[i]);
-				break;
-			case 5:
-				nodeArr[i] = dadras(nodeArr[i]);
-				break;
-			case 6:
-				nodeArr[i] = zhouChen(nodeArr[i]);
-				break;
-			case 7:
-				nodeArr[i] = thomas(nodeArr[i]);
-				break;
-			case 8:
-				nodeArr[i] = rayleighBernard(nodeArr[i]);
-				break;
-			case 9:
-				nodeArr[i] = cells(nodeArr[i]);
-				break;
-			case 10:
-				nodeArr[i] = bouali(nodeArr[i]);
-				break;
-			case 11:
-				nodeArr[i] = chenLee(nodeArr[i]);
-				break;
-			default:
-				nodeArr[i] = lorenz(nodeArr[i]);
-				break;
-		}
+		stepAttr(nodeArr[i], div, choice);
 	}
 }
 
-float sizeTest(lNode** nodeArr, int n, int choice, float max) {
+void stepAttr(lNode* nodeArr, int div, int choice) {	
+	addQueue(nodeArr, div);
+	switch (choice) {
+		case 1:
+			nodeArr = lorenz(nodeArr);
+			break;
+		case 2:
+			nodeArr = halvorsen(nodeArr);
+			break;
+		case 3:
+			nodeArr = aizawa(nodeArr);
+			break;
+		case 4:
+			nodeArr = fourWing(nodeArr);
+			break;
+		case 5:
+			nodeArr = dadras(nodeArr);
+			break;
+		case 6:
+			nodeArr = zhouChen(nodeArr);
+			break;
+		case 7:
+			nodeArr = thomas(nodeArr);
+			break;
+		case 8:
+			nodeArr = rayleighBernard(nodeArr);
+			break;
+		case 9:
+			nodeArr = cells(nodeArr);
+			break;
+		case 10:
+			nodeArr = bouali(nodeArr);
+			break;
+		case 11:
+			nodeArr = chenLee(nodeArr);
+			break;
+		default:
+			nodeArr = lorenz(nodeArr);
+			break;
+	}
+}
+
+float sizeTest(lNode** nodeArr, int n, int div, int choice, float max) {
 	for (int i=0; i<n; i++) {
-		switch (choice) {
-			case 1:
-				nodeArr[i] = lorenz(nodeArr[i]);
-				break;
-			case 2:
-				nodeArr[i] = halvorsen(nodeArr[i]);
-				break;
-			case 3:
-				nodeArr[i] = aizawa(nodeArr[i]);
-				break;
-			case 4:
-				nodeArr[i] = fourWing(nodeArr[i]);
-				break;
-			case 5:
-				nodeArr[i] = dadras(nodeArr[i]);
-				break;
-			case 6:
-				nodeArr[i] = zhouChen(nodeArr[i]);
-				break;
-			case 7:
-				nodeArr[i] = thomas(nodeArr[i]);
-				break;
-			case 8:
-				nodeArr[i] = rayleighBernard(nodeArr[i]);
-				break;
-			case 9:
-				nodeArr[i] = cells(nodeArr[i]);
-				break;
-			case 10:
-				nodeArr[i] = bouali(nodeArr[i]);
-				break;
-			case 11:
-				nodeArr[i] = chenLee(nodeArr[i]);
-				break;
-			default:
-				nodeArr[i] = lorenz(nodeArr[i]);
-				break;
-		}
+		stepAttr(nodeArr[i], div, choice);
 		if (fabs(nodeArr[i]->x) > max) max = fabs(nodeArr[i]->x);
 		if (fabs(nodeArr[i]->y) > max) max = fabs(nodeArr[i]->y);
 		if (fabs(nodeArr[i]->z) > max) max = fabs(nodeArr[i]->z);

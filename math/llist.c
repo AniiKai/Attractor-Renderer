@@ -100,3 +100,19 @@ void tailSim(lNode* cont, unsigned int ID) {
 		curr = curr->prev;
 	}
 }
+void visualizeTest(lNode* cont, unsigned int ID) {
+	tailNode* curr = cont->end;
+	while(curr != NULL) {
+		
+		glBufferData(GL_ARRAY_BUFFER, sizeof(curr->vert), curr->vert, GL_STATIC_DRAW);
+		
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+		glEnableVertexAttribArray(0);
+
+
+		setCols(ID, "ins", curr->cols);
+			
+		glDrawArrays(GL_LINES, 0, 2);
+		curr = curr->prev;
+	}
+}

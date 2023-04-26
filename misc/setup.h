@@ -9,4 +9,5 @@ int setupAttr();
 
 void setupConf();
 
+int setupRT();
 #endif
