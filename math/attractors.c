@@ -201,6 +201,24 @@ lNode* chenLee(lNode* node) {
 	return node;
 
 }
+
+lNode* roessler(lNode* node) {
+	float a = 0.2f;
+	float b = 0.2f;
+	float c = 5.7f;
+	float t = 0.05f;
+	float x = node->x;
+	float y = node->y;
+	float z = node->z;
+	node->x = x + t * (-1.0f*y - z);
+	node->y = y + t * (x + a*y);
+	node->z = z + t * (b + z*(x-c));
+	node->px = x;
+	node->py = y;
+	node->pz = z;
+	return node;
+}
+
 void runSim(lNode** nodeArr, int n, int div, unsigned int ID, int choice) {
 	for (int i=0; i<n; i++) {
 		tailSim(nodeArr[i], ID);
@@ -243,6 +261,9 @@ void stepAttr(lNode* nodeArr, int div, int choice) {
 			break;
 		case 11:
 			nodeArr = chenLee(nodeArr);
+			break;
+		case 12:
+			nodeArr = roessler(nodeArr);
 			break;
 		default:
 			nodeArr = lorenz(nodeArr);

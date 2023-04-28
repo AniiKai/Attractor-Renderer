@@ -33,6 +33,8 @@ lNode* bouali(lNode* node);
 
 lNode* chenLee(lNode* node);
 
+lNode* roessler(lNode* node);
+
 void runSim(lNode** nodeArr, int n, int div, unsigned int ID, int choice); // calculate a step + render it
 
 void stepAttr(lNode* nodeArr, int div, int choice); // calculate a step of a chaotic system

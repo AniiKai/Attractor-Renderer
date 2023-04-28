@@ -136,6 +136,9 @@ int main() {
 		case 11:
 			div = 14;
 			break;
+		case 12:
+			div = 55;
+			break;
 		default:
 			div = 55;
 			break;

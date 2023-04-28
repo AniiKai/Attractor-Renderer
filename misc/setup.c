@@ -9,7 +9,7 @@ int setupWelcome() {
 	printf("\t##### RUNNING SETUP #####\n\n");
 	printf("\t[ O ]> Enter ammount of nodes to simulate.\n");
 	printf("\t[ O ]> The larger the number, the more lines will be drawn, at the cost of performance.\n\n");
-	printf("\t[ I ]> Enter ammount: ");
+	printf("\t[ I ]> Enter amount: ");
 	int n = 0;
 	scanf("%d", &n);
 	return n;
@@ -18,7 +18,7 @@ int setupWelcome() {
 int setupFS() {
 	printf("\n\t\t. . .\n\n");
 	printf("\t[ O ]> Confirmed!\n\n");
-	printf("\t[ O ]> Would you like to run in fullscreen?\n");
+	printf("\t[ O ]> Would you like to run in full-screen?\n");
 	printf("\t[ O ]> 0: YES, 1: NO\n\n");
 	printf("\t[ I ]> Enter choice: ");
 	int n = 0;
@@ -38,7 +38,8 @@ int setupAttr() {
 	if (n==10) {
 		printf("\n\n\t[ O ]> Release Attractors, extra attractors added each new release!\n\n");
 		printf("\t[ O ]> 1: Ver. 0.0.1 - Bouali.\n");
-		printf("\t[ O ]> 1: Ver. 0.0.2 - Chen Lee.\n");
+		printf("\t[ O ]> 2: Ver. 0.0.2 - Chen Lee.\n");
+		printf("\t[ O ]> 3: ver. 0.1.0 - Roessler.\n");
 
 		printf("\n\t[ I ]> Enter Choice: ");
 		scanf("%d", &n);
