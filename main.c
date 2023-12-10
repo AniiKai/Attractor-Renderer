@@ -1,4 +1,3 @@
-// making this into a c file soon!
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -95,11 +94,21 @@ int main() {
 		x += 1.0f;
 		z += 5.0f;
 	}
+	if (alg == 13) {
+		x += 2.0f;
+		z += 3.0f;
+		y += 4.0f;
+	}
 	for (int i=0; i<n; i++) {
 		nodeArr[i] = newNode(x, y, z);
 		x += 0.0002f;
 		y += 0.00015f;
 		z += 0.0001f;
+		if (alg == 13) {
+			x = 20*sin(i);
+			y += 15*cos(i);
+			z += 10*sin((float)i/2.0f);
+		}
 	}
 	int div = 0;
 	switch(alg) {
@@ -137,6 +146,9 @@ int main() {
 			div = 14;
 			break;
 		case 12:
+			div = 55;
+			break;
+		case 13:
 			div = 55;
 			break;
 		default:
@@ -213,7 +225,11 @@ int main() {
 		if (runTest == 0) {
 			visualizeTest(nodeArr[0], shader);
 		} else {
-			runSim(nodeArr, n, div, shader, alg); // step the simulation
+			if (alg != 13) {
+				runSim(nodeArr, n, div, shader, alg); // step the simulation
+			} else {
+				stepGravity(nodeArr, n, div, shader);
+			}
 		}
 		// swap render buffer 
 		glfwSwapBuffers(window);

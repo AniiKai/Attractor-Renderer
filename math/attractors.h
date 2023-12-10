@@ -35,6 +35,10 @@ lNode* chenLee(lNode* node);
 
 lNode* roessler(lNode* node);
 
+lNode* gravitational(lNode** node, int i, int n);
+
+void stepGravity(lNode** nodeArr, int n, int div, unsigned int ID);
+
 void runSim(lNode** nodeArr, int n, int div, unsigned int ID, int choice); // calculate a step + render it
 
 void stepAttr(lNode* nodeArr, int div, int choice); // calculate a step of a chaotic system

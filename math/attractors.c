@@ -204,7 +204,7 @@ lNode* chenLee(lNode* node) {
 
 lNode* roessler(lNode* node) {
 	float a = 0.2f;
-	float b = 0.2f;
+	float b = 0.3f;
 	float c = 5.7f;
 	float t = 0.05f;
 	float x = node->x;
@@ -219,6 +219,49 @@ lNode* roessler(lNode* node) {
 	return node;
 }
 
+lNode* gravitational(lNode** node, int i, int n) {
+	float m = 4000995.0f;
+	float mc = 100;
+	float G = 6.674*0.00000000001;
+	float t = 1.0f;
+	float x = node[i]->x;
+	float y = node[i]->y;
+	float z = node[i]->z;
+	float xa = 0;
+	float ya = 0;
+	float za = 0;
+	for (int j=0; j<n; j++) {
+		if (j != i) {
+			float xDist = node[j]->x-x;
+			float yDist = node[j]->y-y;
+			float zDist = node[j]->z-z;
+			float dist = sqrtf(xDist*xDist + yDist*yDist + zDist*zDist);
+			float a = G*m/dist*dist;
+			xa += a*(xDist/dist);
+			ya += a*(yDist/dist);
+			za += a*(zDist/dist);
+		}
+	}
+	float dist = sqrtf(x*x + y*y + z*z);
+	xa -= ((G*mc*m)/dist*dist)*(x/dist);
+	ya -= ((G*mc*m)/dist*dist)*(y/dist);
+	za -= ((G*mc*m)/dist*dist)*(z/dist);
+	node[i]->x = 2*x - node[i]->px + xa*t*t;
+	node[i]->y = 2*y - node[i]->py + ya*t*t;
+	node[i]->z = 2*z - node[i]->pz + za*t*t;
+	node[i]->px = x;
+	node[i]->py = y;
+	node[i]->pz = z;
+	return node[i];
+}
+
+void stepGravity(lNode** nodeArr, int n, int div, unsigned int ID) {
+	for (int i=0; i<n; i++) {
+		tailSim(nodeArr[i], ID);
+		addQueue(nodeArr[i], div);
+		nodeArr[i] = gravitational(nodeArr, i, n);
+	}
+}
 void runSim(lNode** nodeArr, int n, int div, unsigned int ID, int choice) {
 	for (int i=0; i<n; i++) {
 		tailSim(nodeArr[i], ID);
