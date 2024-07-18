@@ -63,26 +63,117 @@ int main() {
 	
 	//Shader testShader("shader/defaultShader.vert", "shader/defaultShader.frag");
 	unsigned int shader = createShader("shader/defaultShader.vert", "shader/defaultShader.frag");
+	unsigned int texShader = createShader("shader/bloom.vert", "shader/bloom.frag");
+	unsigned int blurShader = createShader("shader/blur.vert", "shader/blur.frag");
 	
 	// create buffer objects
 	//unsigned int EBO;
+	/*
+	unsigned int VBO;
+	unsigned int VAO;
+	glGenVertexArrays(1, &VAO);
+	glGenBuffers(1, &VBO);
+	*/
+
+	
+	float quadVertices[] = { 
+	//positions		//texCoords
+	-1.0f, 1.0f, 0.0f,	0.0f, 1.0f,
+	1.0f, 1.0f, 0.0f,	1.0f, 1.0f,
+	-1.0f, -1.0f, 0.0f,	0.0f, 0.0f,
+
+	
+	-1.0f, -1.0f, 0.0f,	0.0f, 0.0f,
+	1.0f, 1.0f, 0.0f,	1.0f, 1.0f,
+	1.0f, -1.0f, 0.0f,	1.0f, 0.0f,
+    	};
+
+	unsigned int quadVAO, quadVBO;
+	glGenVertexArrays(1, &quadVAO);
+	glGenBuffers(1, &quadVBO);
+	glBindVertexArray(quadVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, quadVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(quadVertices), &quadVertices, GL_STATIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	
+	unsigned int framebuffer;
+	glGenFramebuffers(1, &framebuffer);
+	glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+
+	unsigned int textureColorbuffer;
+	glGenTextures(1, &textureColorbuffer);
+
+	glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureColorbuffer, 0); 
+
+	unsigned int rbo;
+	glGenRenderbuffers(1, &rbo);
+	glBindRenderbuffer(GL_RENDERBUFFER, rbo);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, SCR_WIDTH, SCR_HEIGHT);
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, rbo);
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+		printf("FRAMEBUFFER NOT COMPLETE!\n");
+	}
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+	unsigned int pingpongFBO[2];
+	unsigned int pingpongColorbuffers[2];
+	glGenFramebuffers(2, pingpongFBO);
+	glGenTextures(2, pingpongColorbuffers);
+	for (int i=0; i<2; i++) {
+		glBindFramebuffer(GL_FRAMEBUFFER, pingpongFBO[i]);
+		glBindTexture(GL_TEXTURE_2D, pingpongColorbuffers[i]);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA16F, SCR_WIDTH, SCR_HEIGHT, 0, GL_RGBA, GL_FLOAT, NULL);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, pingpongColorbuffers[i], 0); 
+		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
+			printf("FRAMEBUFFER NOT COMPLETE!\n");
+		}
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+		
+	}
+
+
+	useShader(texShader);
+	setInt(texShader, "scene", 0);
+	setInt(texShader, "bloomBlur", 1);
+	useShader(blurShader);
+	setInt(blurShader, "image", 0);
+
+
+	/*
+	// create and assign the test obj to index 1 of the array buffer
+	glBindVertexArray(VAO);
+	
+	glBindBuffer(GL_ARRAY_BUFFER, VBO); // bind current buffer 
+	*/
 	unsigned int VBO;
 	unsigned int VAO;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
 
-	
-	// create and assign the test obj to index 1 of the array buffer
-	glBindVertexArray(VAO);
-	
-	glBindBuffer(GL_ARRAY_BUFFER, VBO); // bind current buffer 
+
 
 	//testShader.use();
 	useShader(shader);
 	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-	glEnable(GL_BLEND);
+	//glEnable(GL_BLEND);
 	glEnable(GL_DEPTH_TEST);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 	glEnable(GL_MULTISAMPLE);
 	// attractor stuff here
 	lNode** nodeArr = (lNode**)malloc(n * sizeof(lNode*)); // create list of nodes to simulate attractor with
@@ -98,6 +189,11 @@ int main() {
 		x += 2.0f;
 		z += 3.0f;
 		y += 4.0f;
+	}
+	if (alg == 14) {
+		x = -1.0f;
+		y = 0;
+		z = 0.5f;
 	}
 	for (int i=0; i<n; i++) {
 		nodeArr[i] = newNode(x, y, z);
@@ -149,6 +245,9 @@ int main() {
 			div = 55;
 			break;
 		case 13:
+			div = 55;
+			break;
+		case 14:
 			div = 55;
 			break;
 		default:
@@ -211,6 +310,15 @@ int main() {
 			camZ = (float)(rand()%1000)/250.0f - 2.0f;
 		}
 
+		glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
+		useShader(shader);
+		glEnable(GL_DEPTH_TEST);
+		glClearColor(0.0f, 0.0f, 0.0f, 1.0f); // background color 
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		//glBindVertexArray(VAO);
+		//glBindBuffer(GL_ARRAY_BUFFER, VBO); // bind current buffer 
+		
+
 		vec3 eye = {pCamX, pCamY, pCamZ};
 		vec3 center = {0.0f, 0.0f, 0.0f};
 		glm_lookat(eye, center, up, view);
@@ -219,9 +327,9 @@ int main() {
 		setView(shader, "view", view);
 		setView(shader, "proj", proj);	
 		
+		glBindVertexArray(VAO);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO); // bind current buffer 
 
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f); // background color 
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		if (runTest == 0) {
 			visualizeTest(nodeArr[0], shader);
 		} else {
@@ -231,6 +339,50 @@ int main() {
 				stepGravity(nodeArr, n, div, shader);
 			}
 		}
+		glBindVertexArray(0);
+
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
+		bool horizontal = true;
+		bool firstIt = true;
+		int amount = 10;
+		useShader(blurShader);
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // background color 
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		for (int i=0; i<amount; i++) {
+			glBindFramebuffer(GL_FRAMEBUFFER, pingpongFBO[horizontal]);
+			setInt(blurShader, "horizontal", horizontal);
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, firstIt ? textureColorbuffer : pingpongColorbuffers[!horizontal]);
+			glBindVertexArray(quadVAO);
+			glBindBuffer(GL_ARRAY_BUFFER, quadVBO); // bind current buffer 
+			glDrawArrays(GL_TRIANGLES, 0, 6);
+			glBindVertexArray(0);
+			horizontal = !horizontal;
+			if (firstIt) {
+				firstIt = false;
+			}
+		}
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
+
+		useShader(texShader);
+		glDisable(GL_DEPTH_TEST);
+		glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // background color 
+		glClear(GL_COLOR_BUFFER_BIT);
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, textureColorbuffer);
+		glActiveTexture(GL_TEXTURE1);
+		glBindTexture(GL_TEXTURE_2D, pingpongColorbuffers[!horizontal]);
+		glBindVertexArray(quadVAO);
+		glBindBuffer(GL_ARRAY_BUFFER, quadVBO); // bind current buffer 
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		glBindVertexArray(0);
+
+
 		// swap render buffer 
 		glfwSwapBuffers(window);
 		glfwPollEvents();

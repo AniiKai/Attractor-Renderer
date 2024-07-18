@@ -11,4 +11,6 @@ void checkCompileErrors(GLuint shader, char* type);
 void setView(unsigned int ID, char* name, mat4 view);
 void useShader(unsigned int ID);
 
+void setInt(unsigned int ID, char* name, int val);
+
 #endif

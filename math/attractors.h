@@ -37,6 +37,8 @@ lNode* roessler(lNode* node);
 
 lNode* gravitational(lNode** node, int i, int n);
 
+lNode* sierpinskiDifferential(lNode* node);
+
 void stepGravity(lNode** nodeArr, int n, int div, unsigned int ID);
 
 void runSim(lNode** nodeArr, int n, int div, unsigned int ID, int choice); // calculate a step + render it

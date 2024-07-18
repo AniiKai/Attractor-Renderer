@@ -41,6 +41,7 @@ int setupAttr() {
 		printf("\t[ O ]> 2: Ver. 0.0.2 - Chen Lee.\n");
 		printf("\t[ O ]> 3: ver. 0.1.0 - Roessler.\n");
 		printf("\t[ O ]> 4: ver. 0.1.1 - Gravitational?\n");
+		printf("\t[ O ]> 5: ver. 0.1.2 - Sierpinski Differential\n");
 
 		printf("\n\t[ I ]> Enter Choice: ");
 		scanf("%d", &n);

@@ -9,8 +9,8 @@ int createShader(char* vertexPath, char* fragmentPath) {
 	FILE* fFile;
 	vFile = fopen(vertexPath, "r");
 	fFile = fopen(fragmentPath, "r");
-	char* vShader = (char*)calloc(1024, sizeof(char));
-	char* fShader = (char*)calloc(1024, sizeof(char));
+	char* vShader = (char*)calloc(65536, sizeof(char));
+	char* fShader = (char*)calloc(65536, sizeof(char));
 	char line[1024];
 	while(fgets(line, sizeof(line), vFile) != NULL) {
 		strcat(vShader, line);
@@ -71,6 +71,10 @@ void setCols(unsigned int ID, char* name, float rgba[4]) {
 
 void setView(unsigned int ID, char* name, mat4 view) {
 			glUniformMatrix4fv(glGetUniformLocation(ID, name), 1, GL_FALSE, &view[0][0]);
+}
+
+void setInt(unsigned int ID, char* name, int val) {
+	glUniform1i(glGetUniformLocation(ID, name), val);
 }
 
 void useShader(unsigned int ID) {

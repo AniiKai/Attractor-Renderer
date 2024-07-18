@@ -255,6 +255,22 @@ lNode* gravitational(lNode** node, int i, int n) {
 	return node[i];
 }
 
+lNode* sierpinskiDifferential(lNode* node) {
+	float t = 0.001f;
+	float a = 1.1f;
+	float g = 0.87f;
+	float x = node->x; 
+	float y = node->y; 
+	float z = node->z; 
+	node->x = x + t * (y*(z - 1 +x*x) + g*x);
+	node->y = y + t * (x*(3*z + 1 - x*x) + g*y);
+	node->z = z + t * (-2*z*(a + x*y));
+	node->px = x;
+	node->py = y;
+	node->pz = z;
+	return node;
+}
+
 void stepGravity(lNode** nodeArr, int n, int div, unsigned int ID) {
 	for (int i=0; i<n; i++) {
 		tailSim(nodeArr[i], ID);
@@ -307,6 +323,9 @@ void stepAttr(lNode* nodeArr, int div, int choice) {
 			break;
 		case 12:
 			nodeArr = roessler(nodeArr);
+			break;
+		case 14:
+			nodeArr = sierpinskiDifferential(nodeArr);
 			break;
 		default:
 			nodeArr = lorenz(nodeArr);
